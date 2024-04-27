@@ -1,0 +1,18 @@
+Login Credentials:
+    username, email(unique), pass, profilePic, Learner(True/False)
+
+Static Videos:
+    Youtube Embeds
+    Featured Videos(fixed 10 vdo links): will come from DB
+    
+
+Dynamic Videos/Posts:
+    Video-->
+        Educator posts to DB
+        Everyone can view videos
+    Posts-->
+        Everybody posts to DB (only queries or remedies)
+        Anybody else can suggest (optional)
+    Exercises (Optional)-->
+        Educator posts Questions
+        Learners do small QnA's
