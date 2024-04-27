@@ -24,3 +24,5 @@ const userSchema = new Schema({
     default: "https://www.gravatar.com/avatar/",
   },
 });
+
+export default models.User || model("User", userSchema);
