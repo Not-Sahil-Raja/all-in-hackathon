@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
+import { Download } from "lucide-react";
 
 const page = () => {
   const ExcerciseData = [
@@ -181,42 +182,23 @@ const page = () => {
             </div>
           </div>
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12 ">
-            <Card>
-              <CardContent className="space-y-2">
-                <h3 className="text-xl font-bold">Math Workbook</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  A comprehensive workbook covering essential math concepts,
-                  with practice problems and solutions.
-                </p>
-                <Button size="sm" variant="link">
-                  Download
-                </Button>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="space-y-2">
-                <h3 className="text-xl font-bold">Biology Notes</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Detailed notes on the key topics in biology, perfect for
-                  review and exam preparation.
-                </p>
-                <Button size="sm" variant="link">
-                  Download
-                </Button>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="space-y-2">
-                <h3 className="text-xl font-bold">Practice Exams</h3>
-                <p className="text-gray-500 dark:text-gray-400">
-                  A collection of practice exams across various subjects to help
-                  you assess your readiness.
-                </p>
-                <Button size="sm" variant="link">
-                  Download
-                </Button>
-              </CardContent>
-            </Card>
+            {offlineResources.map((resource, index) => (
+              <Card key={index}>
+                <CardContent className="flex flex-col gap-2 justify-around py-2">
+                  <h3 className="text-xl font-bold">{resource.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    {resource.description}
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="flex gap-2 my-3"
+                  >
+                    Download <Download size={16} />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>

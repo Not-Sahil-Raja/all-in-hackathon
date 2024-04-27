@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
@@ -17,10 +19,79 @@ import {
   CardFooter,
   Card,
 } from "@/components/ui/card";
+import axios from "axios";
 
 const page = () => {
+  const { user, error, isLoading } = useUser();
+  const [postProblem, setpostProblem] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [postProblemLoading, setPostProblemLoading] = useState(false);
+
+  const postTheProblem = (e) => {
+    e.preventDefault();
+    setPostProblemLoading(true);
+    axios
+      .post("/api/problemPost/new", {
+        title,
+        description,
+        postedBy: user,
+      })
+      .then((res) => {
+        console.log(res);
+        setTitle("");
+        setDescription("");
+        setpostProblem(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setPostProblemLoading(false);
+      });
+  };
+
   return (
     <div className="grid min-h-screen w-full grid-cols-[280px_1fr] bg-gray-100 dark:bg-gray-950">
+      {postProblem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-semibold">Post a Problem</h2>
+            <form className="mt-4 space-y-4" onSubmit={postTheProblem}>
+              <Input
+                className="w-full"
+                placeholder="Title"
+                type="text"
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                required
+              />
+              <Input
+                className="w-full"
+                placeholder="Description"
+                type="text"
+                onChange={(e) => setDescription(e.target.value)}
+                value={description}
+                required
+              />
+              <Button
+                className="w-full"
+                type="submit"
+                variant={postProblemLoading ? "loading" : "outline"}
+              >
+                Post Problem
+              </Button>
+            </form>
+            <Button
+              className="mt-4 w-full"
+              onClick={(prev) => setpostProblem(!prev)}
+              variant="secondary"
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
       <div className="hidden border-r bg-gray-100/40 dark:bg-gray-800/40 lg:block">
         <div className="flex h-full max-h-screen flex-col gap-6 p-6">
           <div className="flex items-center justify-between">
@@ -119,11 +190,15 @@ const page = () => {
             </div>
           </nav>
           <div className="mt-auto">
-            <Button className="w-full" variant="outline">
+            <Button
+              className="w-full"
+              variant="outline"
+              onClick={() => setpostProblem(!postProblem)}
+            >
               Ask a Question
             </Button>
             <Button className="w-full mt-4" variant="outline">
-              Create a Problem
+              Post a Problem
             </Button>
           </div>
         </div>
