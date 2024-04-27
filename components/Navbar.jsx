@@ -1,15 +1,76 @@
+"use client";
 import React from "react";
 import Link from "next/link";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Avatar } from "@radix-ui/react-avatar";
 
 const Navbar = () => {
+  const { user, error, isLoading } = useUser();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+  console.log(user);
   return (
-    <header className="px-4 lg:px-6 h-14 flex items-center border-b border-gray-200 dark:border-gray-800">
-      <Link className="flex items-center justify-center" href="#">
-        <MountainIcon className="h-6 w-6" />
-        <span className="sr-only">Acme Edtech</span>
+    <header className="px-4 lg:px-6 h-14 w-full flex items-center border-b justify-center border-gray-200 dark:border-gray-800 fixed backdrop-blur-md bg-[#ffffff18] z-[150]">
+      <Link
+        className="flex items-center justify-center text-lg font-semibold mr-auto"
+        href="/"
+      >
+        Jengo
       </Link>
-      <nav className="ml-auto flex gap-4 sm:gap-6">
-        <Link
+      {user && (
+        <div className="   flex gap-3 items-center w-fit justify-center m-auto">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
+            href="/learning"
+          >
+            Resources
+          </Link>
+
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
+            href="/community"
+          >
+            Community
+          </Link>
+        </div>
+      )}
+      <nav className=" flex gap-4 sm:gap-6  py-2">
+        {user ? (
+          <>
+            <div className=" flex gap-2 object-center">
+              {" "}
+              <Avatar className="">
+                <img
+                  alt="User avatar"
+                  src={user.picture}
+                  className="h-8 w-8 rounded-full"
+                />
+              </Avatar>
+              <div className="  h-full lg:text-sm whitespace-nowrap leading-none">
+                <p className="leading-none">{user.name}</p>
+                <p className=" text-[.9rem] leading-none font-medium">
+                  Learner
+                </p>
+              </div>
+            </div>
+            <Link
+              className="text-sm font-medium border border-black/30 hover:bg-[#47474711] flex justify-center items-center lg:px-2 rounded underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
+              href="/api/auth/logout"
+            >
+              Logout
+            </Link>
+          </>
+        ) : (
+          <Link
+            href="/api/auth/login"
+            className="  text-sm font-medium border px-3 border-black/30 hover:bg-[#47474711] flex justify-center items-center lg:px-2 rounded underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50 h-full "
+          >
+            Login
+          </Link>
+        )}
+
+        {/* <Link
           className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
           href="#"
         >
@@ -32,29 +93,10 @@ const Navbar = () => {
           href="#"
         >
           Contact
-        </Link>
+        </Link> */}
       </nav>
     </header>
   );
 };
 
 export default Navbar;
-
-function MountainIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
-  );
-}
