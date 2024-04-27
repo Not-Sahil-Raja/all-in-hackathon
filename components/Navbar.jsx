@@ -1,14 +1,24 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Avatar } from "@radix-ui/react-avatar";
-
+import axios from "axios";
 const Navbar = () => {
   const { user, error, isLoading } = useUser();
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
+
+  useEffect(() => {
+    axios
+      .post("/api/newUser", user)
+      .then((res) => {
+        console.log("res", res.data);
+      })
+      .catch((err) => {
+        console.log("error in request", err);
+      });
+  }, [user]);
 
   return (
     <header className="px-4 lg:px-6 h-14 w-full flex items-center border-b justify-between border-gray-200 dark:border-gray-800 fixed backdrop-blur-md bg-[#ffffff18] z-[150]">
