@@ -9,15 +9,16 @@ const Navbar = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
-  console.log(user);
+
   return (
-    <header className="px-4 lg:px-6 h-14 w-full flex items-center border-b justify-center border-gray-200 dark:border-gray-800 fixed backdrop-blur-md bg-[#ffffff18] z-[150]">
+    <header className="px-4 lg:px-6 h-14 w-full flex items-center border-b justify-between border-gray-200 dark:border-gray-800 fixed backdrop-blur-md bg-[#ffffff18] z-[150]">
       <Link
-        className="flex items-center justify-center text-lg font-semibold mr-auto"
+        className="flex items-center justify-center text-lg font-semibold "
         href="/"
       >
         Jengo
       </Link>
+
       {user && (
         <div className="   flex gap-3 items-center w-fit justify-center m-auto">
           <Link
