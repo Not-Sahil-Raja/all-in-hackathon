@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^3.5.0",
     "@next/font": "^14.2.3",
     "@nivo/bar": "^0.85.1",
     "@nivo/line": "^0.85.1",
