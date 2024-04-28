@@ -11,34 +11,34 @@ const Navbar = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
 
-  useEffect(() => {
-    // const userFunc = async () => {
-    if (user) {
-      const email = user.email;
-      axios
-        .post("/api/user", { email })
-        .then((res) => {
-          console.log(res.data.userexists);
-          if (!res.data.userexists) {
-            axios
-              .post("/api/newUser", {
-                username: user.name,
-                email: user.email,
-                picture: user.picture,
-                learner: true,
-              })
-              .then((res) => {
-                console.log(res.data);
-              });
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-    // };
-    // userFunc();
-  }, []);
+  // useEffect(() => {
+  //   // const userFunc = async () => {
+  //   if (user) {
+  //     const email = user.email;
+  //     axios
+  //       .post("/api/user", { email })
+  //       .then((res) => {
+  //         console.log(res.data.userexists);
+  //         if (!res.data.userexists) {
+  //           axios
+  //             .post("/api/newUser", {
+  //               username: user.name,
+  //               email: user.email,
+  //               picture: user.picture,
+  //               learner: true,
+  //             })
+  //             .then((res) => {
+  //               console.log(res.data);
+  //             });
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //       });
+  //   }
+  //   // };
+  //   // userFunc();
+  // }, []);
 
   return (
     <header className="px-4 lg:px-6 h-14 w-full flex items-center border-b justify-between border-gray-200 dark:border-gray-800 fixed backdrop-blur-md bg-[#ffffff18] z-[150]">
