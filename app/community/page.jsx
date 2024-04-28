@@ -9,7 +9,7 @@ import axios, { all } from "axios";
 import CommCard from "@/components/commCard/CommCard";
 import { Textarea } from "@/components/ui/textarea";
 
-const page = () => {
+const Page = () => {
   const { user, error, isLoading } = useUser();
   const [postProblem, setpostProblem] = useState(false);
   const [title, setTitle] = useState("");
@@ -182,7 +182,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
 
 function BookIcon(props) {
   return (
