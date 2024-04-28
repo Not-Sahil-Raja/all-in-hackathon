@@ -5,7 +5,7 @@ import { CardContent, Card } from "@/components/ui/card";
 
 export default function learners() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen pt-14">
       <header className="bg-gray-100 py-6 px-4 md:px-6 dark:bg-gray-800">
         <div className="container mx-auto flex items-center">
           <div className="flex items-center space-x-4">
