@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
@@ -10,10 +11,72 @@ import {
   SelectContent,
   Select,
 } from "@/components/ui/select";
+import { useState } from "react";
+import axios from "axios";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function uploadEdu() {
+  const { user, error, isLoading } = useUser();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const textLessonHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/educator/new/text", {
+        title,
+        content,
+        postedBy: user,
+      });
+      console.log(response.data);
+      setTitle("");
+      setContent("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const [description, setDescription] = useState("");
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [options, setOptions] = useState([]);
+  const [option, setOption] = useState("");
+  const [tags, setTags] = useState([]);
+  const [tag, setTag] = useState("");
+
+  const excerciseHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/educator/new/excercise", {
+        title,
+        description,
+        postedBy: user,
+        tags,
+        mcqs: {
+          question,
+          answer,
+          options,
+        },
+      });
+      console.log(response.data);
+      setTitle("");
+      setDescription("");
+      setQuestion("");
+      setAnswer("");
+      setOptions([]);
+      setOption("");
+      setTags([]);
+      setTag("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <main key="1" className="container mx-auto py-12 px-4 md:px-6 lg:px-8">
+    <main
+      key="1"
+      className="container mx-auto pt-16 py-14 px-4 md:px-6 lg:px-8"
+    >
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
           Manage Educational Content
@@ -195,17 +258,17 @@ export default function uploadEdu() {
           </div>
         </div>
       </section>
-      <section className="mt-12 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-        <div className="mb-4 flex items-center justify-between">
+      <section className="mt-12 rounded-lg border  border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
+        <div className="mb-4 flex flex-col gap-3 items-center justify-between">
           <h2 className="text-xl font-bold">Add New Content</h2>
-          <Tabs>
-            <TabsList>
+          <Tabs className=" w-2/3 flex flex-col" defaultValue="text">
+            <TabsList className=" ">
               <TabsTrigger value="video">Video Lesson</TabsTrigger>
               <TabsTrigger value="text">Text Lesson</TabsTrigger>
               <TabsTrigger value="exercise">Exercise</TabsTrigger>
             </TabsList>
-            <TabsContent value="video">
-              <form className="grid gap-6">
+            <TabsContent value="video" className="px-[20%] ">
+              <form className="grid gap-6 mt-5 w-full ">
                 <div>
                   <Label htmlFor="video-title">Title</Label>
                   <Input id="video-title" placeholder="Enter title" />
@@ -227,11 +290,20 @@ export default function uploadEdu() {
                 </Button>
               </form>
             </TabsContent>
-            <TabsContent value="text">
-              <form className="grid gap-6">
+            <TabsContent value="text" className="px-[20%] ">
+              <form
+                className="grid gap-6 mt-5 w-full "
+                onSubmit={textLessonHandler}
+              >
                 <div>
                   <Label htmlFor="text-title">Title</Label>
-                  <Input id="text-title" placeholder="Enter title" />
+                  <Input
+                    id="text-title"
+                    placeholder="Enter title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="text-content">Content</Label>
@@ -239,6 +311,9 @@ export default function uploadEdu() {
                     className="min-h-[200px]"
                     id="text-content"
                     placeholder="Enter content"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    required
                   />
                 </div>
                 <Button className="w-full" type="submit">
@@ -246,33 +321,122 @@ export default function uploadEdu() {
                 </Button>
               </form>
             </TabsContent>
-            <TabsContent value="exercise">
-              <form className="grid gap-6">
+            <TabsContent value="exercise" className="px-[20%] ">
+              <form
+                className="grid gap-6 mt-5 w-full "
+                onSubmit={excerciseHandler}
+              >
                 <div>
                   <Label htmlFor="exercise-title">Title</Label>
-                  <Input id="exercise-title" placeholder="Enter title" />
-                </div>
-                <div>
-                  <Label htmlFor="exercise-type">Type</Label>
-                  <Select id="exercise-type">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select exercise type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mcq">
-                        Multiple Choice Question
-                      </SelectItem>
-                      <SelectItem value="qa">Question and Answer</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="exercise-content">Content</Label>
-                  <Textarea
-                    className="min-h-[200px]"
-                    id="exercise-content"
-                    placeholder="Enter exercise content"
+                  <Input
+                    id="exercise-title"
+                    placeholder="Enter title"
+                    required
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
+                </div>
+
+                <div>
+                  <Label htmlFor="exercise-Description">Description</Label>
+                  <Input
+                    className=""
+                    id="exercise-Description"
+                    placeholder="Add A Short Description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <div>
+                    <Label htmlFor="Question">Question</Label>
+                    <div>
+                      <Input
+                        id="Questions"
+                        type="text"
+                        placeholder="Question"
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                      />{" "}
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="Answer">Answer</Label>
+                    <div>
+                      <Input
+                        id="Answer"
+                        type="text"
+                        placeholder="Answer"
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
+                      />{" "}
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="Options">Options</Label>
+                    <div className=" flex gap-3">
+                      <Input
+                        id="Options"
+                        type="text"
+                        placeholder="Options"
+                        value={option}
+                        onChange={(e) => setOption(e.target.value)}
+                      />{" "}
+                      <Button
+                        variant="secondary"
+                        className="shadow border"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setOptions([...options, option]);
+                          setOption("");
+                        }}
+                      >
+                        Add Option
+                      </Button>
+                    </div>
+                    <div className=" px-3 font-medium opacity-85">
+                      {options.map((option, index) => (
+                        <div key={index}>
+                          {index + 1} {option}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="add-tags">Tag</Label>
+                  <div className=" flex gap-2">
+                    <Input
+                      id="add-tags"
+                      type="text"
+                      placeholder="Add Tags"
+                      value={tag}
+                      onChange={(e) => setTag(e.target.value)}
+                    />{" "}
+                    <Button
+                      variant="secondary"
+                      className="shadow border"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setTags([...tags, tag]);
+                        setTag("");
+                      }}
+                    >
+                      Add Tag
+                    </Button>
+                  </div>
+                  <div className=" px-3 font-medium opacity-85 flex gap-2 mt-2">
+                    {tags.map((tag, index) => (
+                      <div
+                        key={index}
+                        className=" bg-slate-100 rounded-md px-2 py-1 border"
+                      >
+                        #{tag}
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <Button className="w-full" type="submit">
                   Add Exercise
@@ -285,43 +449,3 @@ export default function uploadEdu() {
     </main>
   );
 }
-
-// === styles.css ===
-
-// body {
-//   font-family: var(--font-archivo), sans-serif;
-// }
-
-// h1, h2, h3, h4, h5, h6 {
-//   font-family: var(--font-libre_franklin), sans-serif;
-// }
-
-// === layout.jsx ===
-
-// // This is the root layout component for your Next.js app.
-// // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
-
-// import { Libre_Franklin } from 'next/font/google'
-// import { Archivo } from 'next/font/google'
-// import './styles.css'
-
-// const libre_franklin = Libre_Franklin({
-//   subsets: ['latin'],
-//   display: 'swap',
-//   variable: '--font-libre_franklin',
-// })
-// const archivo = Archivo({
-//   subsets: ['latin'],
-//   display: 'swap',
-//   variable: '--font-archivo',
-// })
-
-// export default function Layout({ children }) {
-//   return (
-//     <html lang="en">
-//       <body className={libre_franklin.variable + archivo.variable}>
-//         {children}
-//       </body>
-//     </html>
-//   )
-// }
