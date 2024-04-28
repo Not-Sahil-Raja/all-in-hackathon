@@ -64,6 +64,12 @@ const Navbar = () => {
           >
             Community
           </Link>
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
+            href="/upload-educator"
+          >
+            Create Content
+          </Link>
         </div>
       )}
       <nav className=" flex gap-4 sm:gap-6  py-2">
