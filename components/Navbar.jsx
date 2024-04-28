@@ -9,20 +9,20 @@ const Navbar = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
 
-  useEffect(() => {
-    if (!user) return;
-    const sendUser = async () => {
-      await axios
-        .post("/api/newUser", { user, learner: true })
-        .then((res) => {
-          console.log("res", res.data);
-        })
-        .catch((err) => {
-          console.log("error in request", err);
-        });
-    };
-    sendUser();
-  }, []);
+  // useEffect(() => {
+  //   if (!user) return;
+  //   const sendUser = async () => {
+  //     await axios
+  //       .post("/api/newUser", { user, learner: true })
+  //       .then((res) => {
+  //         console.log("res", res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log("error in request", err);
+  //       });
+  //   };
+  //   sendUser();
+  // }, []);
 
   return (
     <header className="px-4 lg:px-6 h-14 w-full flex items-center border-b justify-between border-gray-200 dark:border-gray-800 fixed backdrop-blur-md bg-[#ffffff18] z-[150]">

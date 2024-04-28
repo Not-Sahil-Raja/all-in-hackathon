@@ -20,10 +20,10 @@ const problemPostSchema = new Schema(
     //     ref: "Comment",
     //   },
     // ],
-    // upvotes: {
-    //   type: Number,
-    //   default: 0,
-    // },
+    upvotes: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
