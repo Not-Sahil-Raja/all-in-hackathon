@@ -14,10 +14,13 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Link from "next/link";
+import { CloudUploadIcon } from "lucide-react";
 
 export default function UploadEdu() {
   const [yourTextLessons, setYourTextLessons] = useState([]);
   const [yourExcerciseLessons, setYourExcerciseLessons] = useState([]);
+  const [yourVideoLessons, setYourVideoLessons] = useState([]);
 
   const { user, error, isLoading } = useUser();
   const [title, setTitle] = useState("");
@@ -81,7 +84,7 @@ export default function UploadEdu() {
         const response = await axios.get(
           `/api/educator/getLessons/text/${user.email}`
         );
-        console.log(response.data);
+        // console.log(response.data);
         setYourTextLessons(response.data);
       } catch (error) {
         console.error(error);
@@ -93,8 +96,20 @@ export default function UploadEdu() {
         const response = await axios.get(
           `/api/educator/getLessons/excercise/${user.email}`
         );
-        console.log(response.data);
+        // console.log(response.data);
         setYourExcerciseLessons(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchVideoLessons = async () => {
+      try {
+        const response = await axios.get(
+          `api/educator/getLessons/video/sahilraja2002@gmail.com`
+        );
+        console.log(response.data);
+        setYourVideoLessons(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -103,6 +118,7 @@ export default function UploadEdu() {
     if (user) {
       fetchTextLessons();
       fetchExcerciseLessons();
+      fetchVideoLessons();
     }
   }, [user]);
 
@@ -126,45 +142,30 @@ export default function UploadEdu() {
             <Button size="sm">Add Video</Button>
           </div>
           <div className="space-y-4">
-            <div className="grid grid-cols-[100px_1fr] items-center gap-4">
-              <img
-                alt="Video Thumbnail"
-                className="rounded-md object-cover"
-                height={60}
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: "100/60",
-                  objectFit: "cover",
-                }}
-                width={100}
-              />
-              <div>
-                <h3 className="text-lg font-medium">Introduction to Algebra</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {`  A beginner's guide to understanding the fundamentals of
-                  algebra.`}
-                </p>
+            {yourVideoLessons.map((vid, index) => (
+              <div
+                className="grid grid-cols-[100px_1fr] items-center gap-4"
+                key={index}
+              >
+                <video
+                  alt="Video Thumbnail"
+                  className="rounded-md object-cover"
+                  height={60}
+                  src={vid.image_url}
+                  style={{
+                    aspectRatio: "100/60",
+                    objectFit: "cover",
+                  }}
+                  width={100}
+                />
+                <div>
+                  <h3 className="text-lg font-medium">{vid.image_name}</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {vid.image_description}
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-[100px_1fr] items-center gap-4">
-              <img
-                alt="Video Thumbnail"
-                className="rounded-md object-cover"
-                height={60}
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: "100/60",
-                  objectFit: "cover",
-                }}
-                width={100}
-              />
-              <div>
-                <h3 className="text-lg font-medium">Fractions and Decimals</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Learn how to work with fractions and decimals.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
@@ -206,75 +207,27 @@ export default function UploadEdu() {
           <Button size="sm">Add Video</Button>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <div className="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-            <img
-              alt="Video Thumbnail"
-              className="mb-4 rounded-md object-cover"
-              height={200}
-              src="/placeholder.svg"
-              style={{
-                aspectRatio: "300/200",
-                objectFit: "cover",
-              }}
-              width={300}
-            />
-            <h3 className="text-lg font-medium">Introduction to Algebra</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {`A beginner's guide to understanding the fundamentals of algebra.`}
-            </p>
-          </div>
-          <div className="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-            <img
-              alt="Video Thumbnail"
-              className="mb-4 rounded-md object-cover"
-              height={200}
-              src="/placeholder.svg"
-              style={{
-                aspectRatio: "300/200",
-                objectFit: "cover",
-              }}
-              width={300}
-            />
-            <h3 className="text-lg font-medium">Fractions and Decimals</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Learn how to work with fractions and decimals.
-            </p>
-          </div>
-          <div className="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-            <img
-              alt="Video Thumbnail"
-              className="mb-4 rounded-md object-cover"
-              height={200}
-              src="/placeholder.svg"
-              style={{
-                aspectRatio: "300/200",
-                objectFit: "cover",
-              }}
-              width={300}
-            />
-            <h3 className="text-lg font-medium">The Solar System</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Explore the fascinating origins and evolution of our solar system.
-            </p>
-          </div>
-          <div className="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-            <img
-              alt="Video Thumbnail"
-              className="mb-4 rounded-md object-cover"
-              height={200}
-              src="/placeholder.svg"
-              style={{
-                aspectRatio: "300/200",
-                objectFit: "cover",
-              }}
-              width={300}
-            />
-            <h3 className="text-lg font-medium">Photosynthesis</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Understand the process of photosynthesis and its importance in
-              nature.
-            </p>
-          </div>
+          {yourVideoLessons.map((vid, index) => (
+            <>
+              <div className="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">
+                <video
+                  alt="Video Thumbnail"
+                  className="mb-4 rounded-md object-cover"
+                  height={200}
+                  src={vid.image_url}
+                  style={{
+                    aspectRatio: "300/200",
+                    objectFit: "cover",
+                  }}
+                  width={300}
+                />
+                <h3 className="text-lg font-medium">{vid.image_name}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {vid.image_description}
+                </p>
+              </div>
+            </>
+          ))}
         </div>
       </section>
       <section className="mt-12 rounded-lg border  border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
@@ -287,26 +240,13 @@ export default function UploadEdu() {
               <TabsTrigger value="exercise">Exercise</TabsTrigger>
             </TabsList>
             <TabsContent value="video" className="px-[20%] ">
-              <form className="grid gap-6 mt-5 w-full ">
-                <div>
-                  <Label htmlFor="video-title">Title</Label>
-                  <Input id="video-title" placeholder="Enter title" />
-                </div>
-                <div>
-                  <Label htmlFor="video-description">Description</Label>
-                  <Textarea
-                    className="min-h-[100px]"
-                    id="video-description"
-                    placeholder="Enter description"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="video-file">File</Label>
-                  <Input id="video-file" type="file" />
-                </div>
-                <Button className="w-full" type="submit">
-                  Add Video
-                </Button>
+              <form className="w-full flex items-center justify-center mt-8 ">
+                <Link
+                  href="/uploadDemo"
+                  className=" bg-[#00000027] px-4 py-3 rounded w-fit font-medium text-center flex gap-3"
+                >
+                  Share a video <CloudUploadIcon size={24} />
+                </Link>
               </form>
             </TabsContent>
             <TabsContent value="text" className="px-[20%] ">

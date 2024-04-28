@@ -2,6 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { Image, Video } from "cloudinary-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
 
 export default function App() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -43,31 +45,34 @@ export default function App() {
 
   return (
     <>
-      <div className="wrapper">
-        <h1 className="header">Cloudinary Image Upload</h1>
-        <article className="flex flex-col justify-center items-center gap-4">
-          <input
+      <div className="wrapper bg-[#bbbbbb38] py-5 rounded-lg w-2/3 gap-5 flex flex-col justify-around items-center ">
+        <h1 className="header font-semibold text-2xl">
+          Upload and Share Your Video
+        </h1>
+        <article className="flex flex-col justify-center items-center gap-5">
+          <Input
+            type="text"
+            value={imageName}
+            placeholder="Add Video Title"
+            onChange={(e) => setImageName(e.target.value)}
+          />
+          <Input
+            type="text"
+            value={imageDescription}
+            placeholder="Add Short Description"
+            onChange={(e) => setImageDescription(e.target.value)}
+          />
+          <Input
             type="file"
             name="file"
             id="file"
             onChange={(e) => setSelectedImages(e.target.files[0])}
             className="input"
           />
-          <input
-            type="text"
-            value={imageName}
-            placeholder="Image Name"
-            onChange={(e) => setImageName(e.target.value)}
-          />
-          <input
-            type="text"
-            value={imageDescription}
-            placeholder="Image Description"
-            onChange={(e) => setImageDescription(e.target.value)}
-          />
-          <button onClick={uploadImage} className="button">
-            Upload Image
-          </button>
+
+          <Button onClick={uploadImage} className="button mt-9">
+            Post Video
+          </Button>
         </article>
 
         <article className="image-container">

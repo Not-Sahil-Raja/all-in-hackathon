@@ -11,6 +11,7 @@ import axios from "axios";
 const Page = () => {
   const [ExcerciseData, setExcerciseData] = useState([]);
   const [TextData, setTextData] = useState([]);
+  const [VideoData, setVideoData] = useState([]);
   // const ExcerciseData = [
   //   {
   //     title: "Solve for X",
@@ -53,24 +54,6 @@ const Page = () => {
     },
   ];
 
-  const offlineResources = [
-    {
-      title: "Math Workbook",
-      description:
-        "A comprehensive workbook covering essential math concepts, with practice problems and solutions.",
-    },
-    {
-      title: "Biology Notes",
-      description:
-        "Detailed notes on the key topics in biology, perfect for review and exam preparation.",
-    },
-    {
-      title: "Practice Exams",
-      description:
-        "A collection of practice exams across various subjects to help you assess your readiness.",
-    },
-  ];
-
   useEffect(() => {
     const FecthLatestExercises = async () => {
       try {
@@ -85,14 +68,26 @@ const Page = () => {
     const FetchLatestText = async () => {
       try {
         const response = await axios.get("/api/resources/latest/texts");
-        console.log(response.data);
+        // console.log(response.data);
         setTextData(response.data);
       } catch (error) {
         console.error(error);
       }
     };
+
+    const FetchLatestVideo = async () => {
+      try {
+        const response = await axios.get("/api/resources/latest/videos");
+        // console.log(response.data);
+        setVideoData(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     FecthLatestExercises();
     FetchLatestText();
+    FetchLatestVideo();
   }, []);
 
   return (
@@ -161,13 +156,13 @@ const Page = () => {
             </div>
           </div>
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
-            {LessonData.map((lesson, index) => (
+            {VideoData.map((vid, index) => (
               <Card key={index}>
-                <img
+                <video
                   alt="Lesson Thumbnail"
                   className="rounded-t-lg object-cover w-full mb-2"
                   height="200"
-                  src={lesson.imgSrc}
+                  src={vid.image_url}
                   style={{
                     aspectRatio: "300/200",
                     objectFit: "cover",
@@ -176,12 +171,18 @@ const Page = () => {
                 />
                 <CardContent className="space-y-2 flex flex-col">
                   <div className=" py-1">
-                    <h3 className="text-xl font-bold">{lesson.title}</h3>
+                    <h3 className="text-xl font-bold">{vid.image_name}</h3>
                     <p className="text-gray-500 dark:text-gray-400">
-                      {lesson.description}
+                      {vid.image_description}
                     </p>
                   </div>
-                  <Button size="sm" variant="secondary">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      window.location.href = vid.image_url;
+                    }}
+                  >
                     Start Lesson
                   </Button>
                 </CardContent>
