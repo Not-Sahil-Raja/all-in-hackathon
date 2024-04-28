@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-export default function uploadEdu() {
+export default function UploadEdu() {
   const [yourTextLessons, setYourTextLessons] = useState([]);
   const [yourExcerciseLessons, setYourExcerciseLessons] = useState([]);
 
@@ -141,8 +141,8 @@ export default function uploadEdu() {
               <div>
                 <h3 className="text-lg font-medium">Introduction to Algebra</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  A beginner's guide to understanding the fundamentals of
-                  algebra.
+                  {`  A beginner's guide to understanding the fundamentals of
+                  algebra.`}
                 </p>
               </div>
             </div>
@@ -220,7 +220,7 @@ export default function uploadEdu() {
             />
             <h3 className="text-lg font-medium">Introduction to Algebra</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              A beginner's guide to understanding the fundamentals of algebra.
+              {`A beginner's guide to understanding the fundamentals of algebra.`}
             </p>
           </div>
           <div className="rounded-md border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950">

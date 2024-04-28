@@ -177,13 +177,13 @@ const Home = () => (
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <p className="text-lg font-semibold">
-                        "Acme Edtech has been a game-changer for me."
+                        Acme Edtech has been a game-changer for me.
                       </p>
                       <p className="text-gray-500 dark:text-gray-400">
-                        "Before using this platform, I struggled to access
+                        Before using this platform, I struggled to access
                         quality educational resources. Now, I can learn at my
                         own pace and even complete assignments offline. It's
-                        been life-changing."
+                        been life-changing.
                       </p>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -209,13 +209,13 @@ const Home = () => (
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
                       <p className="text-lg font-semibold">
-                        "Acme Edtech has been a game-changer for me."
+                        Acme Edtech has been a game-changer for me.
                       </p>
                       <p className="text-gray-500 dark:text-gray-400">
-                        "Before using this platform, I struggled to access
+                        Before using this platform, I struggled to access
                         quality educational resources. Now, I can learn at my
                         own pace and even complete assignments offline. It's
-                        been life-changing."
+                        been life-changing.
                       </p>
                     </div>
                     <div className="flex items-center space-x-4">

@@ -9,14 +9,11 @@ export const POST = async (req) => {
 
   if (userexists) {
     console.log("user exists");
-    return new Response("user already exists");
+    return new Response(
+      JSON.stringify({ mesage: "user already exists", userexists: true })
+    );
   }
-  const newuser = User.create(data);
-  return new Response("new user created");
-};
-
-export const GET = async () => {
-  await connectDB();
-  const users = await User.findOne({ "user.email": "roxxyman69@gmail.com" });
-  return Response.json(users);
+  return new Response(
+    JSON.stringify({ mesage: "user does not exist", userexists: false })
+  );
 };

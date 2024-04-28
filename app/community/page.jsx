@@ -113,10 +113,11 @@ const Page = () => {
                 Top Posts
               </h4>
               <div className="grid gap-2">
-                {allTopPost.map((post) => (
+                {allTopPost.map((post, index) => (
                   <Link
                     className="group flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-700"
                     href="#"
+                    key={index}
                   >
                     <span>{post.title}</span>
                     <ArrowRightIcon className="h-4 w-4 text-gray-500 transition-transform group-hover:translate-x-1 dark:text-gray-400" />
@@ -129,10 +130,11 @@ const Page = () => {
                 Top Contributors
               </h4>
               <div className="grid gap-2">
-                {allTopPost.map((post) => (
+                {allTopPost.map((post, index) => (
                   <Link
                     className="group flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-700"
                     href="#"
+                    key={index}
                   >
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8">
@@ -171,8 +173,8 @@ const Page = () => {
               </p>
             </div>
             <div className="grid gap-6">
-              {problems.map((problem) => (
-                <CommCard problem={problem} />
+              {problems.map((problem, index) => (
+                <CommCard problem={problem} key={index} />
               ))}
             </div>
           </div>

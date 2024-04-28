@@ -8,7 +8,7 @@ import { CardContent, Card } from "@/components/ui/card";
 import { Download } from "lucide-react";
 import axios from "axios";
 
-const page = () => {
+const Page = () => {
   const [ExcerciseData, setExcerciseData] = useState([]);
   const [TextData, setTextData] = useState([]);
   // const ExcerciseData = [
@@ -235,4 +235,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
