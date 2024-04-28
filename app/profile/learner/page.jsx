@@ -1,25 +1,44 @@
+"use client";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { CardContent, Card } from "@/components/ui/card";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function learners() {
+  const { user, error, isLoading } = useUser();
   return (
     <div className="flex flex-col min-h-screen pt-14">
-      <header className="bg-gray-100 py-6 px-4 md:px-6 dark:bg-gray-800">
+      <header className="bg-gray-500 h-40 px-4 md:px-6 dark:bg-gray-800 flex items-center">
         <div className="container mx-auto flex items-center">
-          <div className="flex items-center space-x-4">
-            <Avatar className="h-12 w-12">
-              <AvatarImage alt="Avatar" src="/placeholder-avatar.jpg" />
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
-            <div>
-              <h1 className="text-lg font-semibold">John Doe</h1>
-              <p className="text-gray-500 dark:text-gray-400">Student</p>
-            </div>
+          <div className="flex flex-row justify-normal items-center space-x-4">
+            {user ? (
+              <>
+                <Avatar className="h-20 w-20">
+                  <AvatarImage alt="Avatar" src={user.picture} />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h1 className="text-lg font-semibold">{user.name}</h1>
+                  <p className="text-gray-800 dark:text-gray-400">Student</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <Avatar className="h-20 w-20">
+                  <AvatarImage alt="Avatar" src="/placeholder-avatar.jpg" />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h1 className="text-lg font-semibold">User</h1>
+                  <p className="text-gray-800 dark:text-gray-400">Student</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </header>
+
       <main className="flex-1 py-8">
         <div className="container mx-auto">
           <Tabs className="w-full" defaultValue="bookmarks">
@@ -28,7 +47,7 @@ export default function learners() {
               <TabsTrigger value="posts">Posts</TabsTrigger>
               <TabsTrigger value="exercises">Exercises</TabsTrigger>
             </TabsList>
-            <TabsContent className="pt-6" value="bookmarks">
+            <TabsContent className="pt-6 hidden" value="bookmarks">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <Card>
                   <CardContent>
@@ -178,7 +197,7 @@ export default function learners() {
                 </Card>
               </div>
             </TabsContent>
-            <TabsContent className="pt-6" value="exercises">
+            <TabsContent className="pt-6 hidden" value="exercises">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 <Card>
                   <CardContent>
