@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { CardContent, Card } from "@/components/ui/card";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-export default function learners() {
+export default function Learners() {
   const { user, error, isLoading } = useUser();
   return (
     <div className="flex flex-col min-h-screen pt-14">

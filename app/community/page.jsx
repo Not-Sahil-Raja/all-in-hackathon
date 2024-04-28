@@ -9,7 +9,7 @@ import axios, { all } from "axios";
 import CommCard from "@/components/commCard/CommCard";
 import { Textarea } from "@/components/ui/textarea";
 
-const page = () => {
+const Page = () => {
   const { user, error, isLoading } = useUser();
   const [postProblem, setpostProblem] = useState(false);
   const [title, setTitle] = useState("");
@@ -113,10 +113,11 @@ const page = () => {
                 Top Posts
               </h4>
               <div className="grid gap-2">
-                {allTopPost.map((post) => (
+                {allTopPost.map((post, index) => (
                   <Link
                     className="group flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-700"
                     href="#"
+                    key={index}
                   >
                     <span>{post.title}</span>
                     <ArrowRightIcon className="h-4 w-4 text-gray-500 transition-transform group-hover:translate-x-1 dark:text-gray-400" />
@@ -129,10 +130,11 @@ const page = () => {
                 Top Contributors
               </h4>
               <div className="grid gap-2">
-                {allTopPost.map((post) => (
+                {allTopPost.map((post, index) => (
                   <Link
                     className="group flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-700"
                     href="#"
+                    key={index}
                   >
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8">
@@ -171,8 +173,8 @@ const page = () => {
               </p>
             </div>
             <div className="grid gap-6">
-              {problems.map((problem) => (
-                <CommCard problem={problem} />
+              {problems.map((problem, index) => (
+                <CommCard problem={problem} key={index} />
               ))}
             </div>
           </div>
@@ -182,7 +184,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
 
 function BookIcon(props) {
   return (
