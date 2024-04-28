@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import "@/styles/globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
         <body>
           <Navbar />
           {children}
+          <Footer />
         </body>
       </UserProvider>
     </html>

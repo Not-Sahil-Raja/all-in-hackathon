@@ -11,11 +11,14 @@ import {
   SelectContent,
   Select,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function uploadEdu() {
+  const [yourTextLessons, setYourTextLessons] = useState([]);
+  const [yourExcerciseLessons, setYourExcerciseLessons] = useState([]);
+
   const { user, error, isLoading } = useUser();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -44,7 +47,7 @@ export default function uploadEdu() {
   const [tags, setTags] = useState([]);
   const [tag, setTag] = useState("");
 
-  const excerciseHandler = async (e) => {
+  const exerciseHandler = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("/api/educator/new/excercise", {
@@ -71,6 +74,37 @@ export default function uploadEdu() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const fetchTextLessons = async () => {
+      try {
+        const response = await axios.get(
+          `/api/educator/getLessons/text/${user.email}`
+        );
+        console.log(response.data);
+        setYourTextLessons(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchExcerciseLessons = async () => {
+      try {
+        const response = await axios.get(
+          `/api/educator/getLessons/excercise/${user.email}`
+        );
+        console.log(response.data);
+        setYourExcerciseLessons(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (user) {
+      fetchTextLessons();
+      fetchExcerciseLessons();
+    }
+  }, [user]);
 
   return (
     <main
@@ -135,28 +169,18 @@ export default function uploadEdu() {
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-bold">Text Lessons</h2>
+            <h2 className="text-xl font-bold">Your Text Lessons</h2>
             <Button size="sm">Add Text</Button>
           </div>
           <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-medium">
-                The History of the Solar System
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Explore the fascinating origins and evolution of our solar
-                system.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium">
-                Introduction to Photosynthesis
-              </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Understand the process of photosynthesis and its importance in
-                nature.
-              </p>
-            </div>
+            {yourTextLessons.map((lesson) => (
+              <div key={lesson._id} className="  px-4 py-2  rounded-md">
+                <h3 className="text-lg font-medium">{lesson.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 text-wrap max-w-full">
+                  {lesson.content}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
@@ -165,19 +189,14 @@ export default function uploadEdu() {
             <Button size="sm">Add Exercise</Button>
           </div>
           <div className="space-y-4">
-            <div>
-              <h3 className="text-lg font-medium">Algebra Practice Problems</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Test your understanding of algebraic concepts with these
-                practice problems.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium">Geometry Worksheet</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Reinforce your knowledge of geometric shapes and formulas.
-              </p>
-            </div>
+            {yourExcerciseLessons.map((lesson) => (
+              <div key={lesson._id} className="  px-4 py-2  rounded-md">
+                <h3 className="text-lg font-medium">{lesson.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 text-wrap max-w-full">
+                  {lesson.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -324,7 +343,7 @@ export default function uploadEdu() {
             <TabsContent value="exercise" className="px-[20%] ">
               <form
                 className="grid gap-6 mt-5 w-full "
-                onSubmit={excerciseHandler}
+                onSubmit={exerciseHandler}
               >
                 <div>
                   <Label htmlFor="exercise-title">Title</Label>

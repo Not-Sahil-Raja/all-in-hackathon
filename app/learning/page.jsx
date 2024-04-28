@@ -1,31 +1,36 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
 import { Download } from "lucide-react";
+import axios from "axios";
 
 const page = () => {
-  const ExcerciseData = [
-    {
-      title: "Solve for X",
-      description:
-        "Practice your algebra skills by solving for the unknown variable.",
-      tags: ["Math", "Easy"],
-    },
-    {
-      title: "Identify the Elements",
-      description:
-        "Test your knowledge of the periodic table by identifying elements from their properties.",
-      tags: ["Science", "Medium"],
-    },
-    {
-      title: "Timeline of Events",
-      description:
-        "Challenge your historical knowledge by placing key events in the correct chronological order.",
-      tags: ["History", "Hard"],
-    },
-  ];
+  const [ExcerciseData, setExcerciseData] = useState([]);
+  const [TextData, setTextData] = useState([]);
+  // const ExcerciseData = [
+  //   {
+  //     title: "Solve for X",
+  //     description:
+  //       "Practice your algebra skills by solving for the unknown variable.",
+  //     tags: ["Math", "Easy"],
+  //   },
+  //   {
+  //     title: "Identify the Elements",
+  //     description:
+  //       "Test your knowledge of the periodic table by identifying elements from their properties.",
+  //     tags: ["Science", "Medium"],
+  //   },
+  //   {
+  //     title: "Timeline of Events",
+  //     description:
+  //       "Challenge your historical knowledge by placing key events in the correct chronological order.",
+  //     tags: ["History", "Hard"],
+  //   },
+  // ];
 
   const LessonData = [
     {
@@ -65,6 +70,30 @@ const page = () => {
         "A collection of practice exams across various subjects to help you assess your readiness.",
     },
   ];
+
+  useEffect(() => {
+    const FecthLatestExercises = async () => {
+      try {
+        const response = await axios.get("/api/resources/latest/exercises");
+
+        setExcerciseData(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const FetchLatestText = async () => {
+      try {
+        const response = await axios.get("/api/resources/latest/texts");
+        console.log(response.data);
+        setTextData(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    FecthLatestExercises();
+    FetchLatestText();
+  }, []);
 
   return (
     <>
@@ -182,12 +211,12 @@ const page = () => {
             </div>
           </div>
           <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12 ">
-            {offlineResources.map((resource, index) => (
+            {TextData.map((resource, index) => (
               <Card key={index}>
                 <CardContent className="flex flex-col gap-2 justify-around py-2">
                   <h3 className="text-xl font-bold">{resource.title}</h3>
                   <p className="text-gray-500 dark:text-gray-400">
-                    {resource.description}
+                    {resource.content}
                   </p>
                   <Button
                     size="sm"
