@@ -1,16 +1,52 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { CardContent, Card } from "@/components/ui/card";
+import { motion, stagger } from "framer-motion";
+import Footer from "@/components/Footer";
+// variants
+const staggerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.5,
+      ease: "easeInOut",
+    },
+  },
+};
+const headingVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const buttonVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0 },
+};
+
+const imageVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
 const Home = () => (
   <>
     <div className="flex flex-col min-h-[100dvh] dark:bg-gray-950 dark:text-gray-50">
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 dark:bg-gray-900">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
+            <motion.div
+              variants={staggerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]"
+            >
               <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
+                <motion.div variants={headingVariants} className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none dark:text-gray-50">
                     Empowering Education in Africa
                   </h1>
@@ -19,30 +55,36 @@ const Home = () => (
                     to underserved communities across Africa, with a focus on
                     mobile-first, offline-first, and localized content.
                   </p>
-                </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                </motion.div>
+                <motion.div
+                  variants={buttonVariants}
+                  className="flex flex-col gap-2 min-[400px]:flex-row"
+                >
                   <Link
                     className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                    href="#"
+                    href="/api/auth/login"
                   >
                     Get Started
                   </Link>
                   <Link
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-gray-800 bg-gray-950 px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-800 hover:text-gray-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-300 disabled:pointer-events-none disabled:opacity-50"
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-gray-800 bg-gray-950 text-gray-50 px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-800 hover:text-gray-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-300 disabled:pointer-events-none disabled:opacity-50"
                     href="#"
                   >
                     Learn More
                   </Link>
-                </div>
+                </motion.div>
               </div>
-              <img
-                alt="Hero"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-                height="550"
-                src="/placeholder.svg"
-                width="550"
-              />
-            </div>
+              {/* front_image */}
+              <motion.div variants={imageVariants}>
+                <img
+                  alt="Hero"
+                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
+                  height="550"
+                  src="https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  width="550"
+                />
+              </motion.div>
+            </motion.div>
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
@@ -67,7 +109,7 @@ const Home = () => (
                 alt="Mobile-first Design"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
                 height="310"
-                src="/placeholder.svg"
+                src="https://images.unsplash.com/photo-1627423896085-e3e694d88e40?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 width="550"
               />
               <div className="flex flex-col justify-center space-y-4">
@@ -146,7 +188,10 @@ const Home = () => (
                     </div>
                     <div className="flex items-center space-x-4">
                       <Avatar>
-                        <AvatarImage src="/placeholder-avatar.svg" />
+                        <AvatarImage
+                          src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTZ8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+                          className=" object-cover"
+                        />
                         <AvatarFallback>AB</AvatarFallback>
                       </Avatar>
                       <div>
@@ -175,7 +220,10 @@ const Home = () => (
                     </div>
                     <div className="flex items-center space-x-4">
                       <Avatar>
-                        <AvatarImage src="/placeholder-avatar.svg" />
+                        <AvatarImage
+                          src="https://images.unsplash.com/photo-1611590027211-b954fd027b51?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTh8fHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+                          className=" object-cover"
+                        />
                         <AvatarFallback>KM</AvatarFallback>
                       </Avatar>
                       <div>
@@ -214,7 +262,7 @@ const Home = () => (
                 alt="Impact"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
                 height="310"
-                src="/placeholder.svg"
+                src="https://www.unicef.org/sites/default/files/styles/hero_tablet/public/UN0508079.jpg.webp?itok=uAtnsxbA`"
                 width="550"
               />
               <div className="flex flex-col justify-center space-y-4">
@@ -261,23 +309,6 @@ const Home = () => (
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
-        <p className="text-xs">© 2024 Acme Edtech. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="text-xs hover:underline underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
-            href="#"
-          >
-            Terms of Service
-          </Link>
-          <Link
-            className="text-xs hover:underline underline-offset-4 dark:text-gray-400 dark:hover:text-gray-50"
-            href="#"
-          >
-            Privacy
-          </Link>
-        </nav>
-      </footer>
     </div>
   </>
 );
